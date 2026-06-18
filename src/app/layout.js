@@ -1,5 +1,7 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import AppNavber from "@/components/AppNavber";
+import Footer from "@/components/Footer";
 
 
 
@@ -20,7 +22,9 @@ export default function RootLayout({ children }) {
       className={`${roboto.variable}  h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <AppNavber/>
         <main>{children}</main>
+        <Footer/>
         </body>
     </html>
   );
