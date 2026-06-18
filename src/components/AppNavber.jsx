@@ -196,20 +196,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {  usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button, Input } from "@heroui/react";
 import { Menu, X, Search, ChevronDown, Scale } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
 
-export default function AppNavbar() {
+
+export default  function AppNavbar () {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+   
+  const {data:session}=useSession()
 
-  const user = {
-    isLoggedIn: true,
-    role: "lawyer",
-  };
-
+  const user=session?.user
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Browse Lawyers", href: "/lawyers" },
@@ -245,7 +245,7 @@ export default function AppNavbar() {
               </Link>
             ))}
 
-            {user.isLoggedIn && (
+            {user  &&(
               <details className="relative">
                 <summary className="flex cursor-pointer list-none items-center gap-1">
                   Dashboard
@@ -272,21 +272,23 @@ export default function AppNavbar() {
           </nav>
 
           {/* Search */}
-          <div className="hidden lg:block w-80">
+          {/* <div className="hidden lg:block w-80">
             <Input
               placeholder="Search lawyers..."
               startContent={<Search size={18} />}
             />
-          </div>
+          </div> */}
 
           {/* Auth */}
           <div className="hidden md:flex items-center gap-2">
-            {user.isLoggedIn ? (
+            {user?  (
               <Button variant="primary">
                 Logout
               </Button>
             ) : (
+             <Link href={"/login"}>
               <Button color="primary">Login</Button>
+             </Link>
             )}
           </div>
 
@@ -317,7 +319,7 @@ export default function AppNavbar() {
               startContent={<Search size={18} />}
             />
 
-            {user.isLoggedIn ? (
+            {user? (
               <>
                 <Link href="/dashboard" className="block">
                   Dashboard
@@ -332,9 +334,9 @@ export default function AppNavbar() {
                 </Button>
               </>
             ) : (
-              <Button color="primary" className="w-full">
-                Login
-              </Button>
+              <Link href={"/"}><Button color="primary" className="w-full">
+               Login
+              </Button></Link>
             )}
           </div>
         )}

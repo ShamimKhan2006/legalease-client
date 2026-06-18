@@ -2,6 +2,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import AppNavber from "@/components/AppNavber";
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 
 
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
       className={`${roboto.variable}  h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Toaster />
         <AppNavber/>
         <main>{children}</main>
         <Footer/>
