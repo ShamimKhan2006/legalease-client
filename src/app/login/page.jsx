@@ -1,39 +1,38 @@
 "use client";
 
-import React from "react";
-import { Check } from "@gravity-ui/icons";
+import React, { useState } from "react";
+import { Check, EyeSlash } from "@gravity-ui/icons";
 import {
   Button,
-  Description,
   FieldError,
   Form,
   Input,
   Label,
   TextField,
+  Separator,
 } from "@heroui/react";
-import { authClient, useSession } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
+import { Eye } from "lucide-react";
+
 
 const LoginPage = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-
     const data = Object.fromEntries(formData);
 
-    console.log(data);
-
     try {
-      const result = await authClient.signIn.email({
+      await authClient.signIn.email({
         email: data.email,
         password: data.password,
       });
-
-      console.log(result);
 
       router.push("/");
     } catch (error) {
@@ -41,72 +40,108 @@ const LoginPage = () => {
     }
   };
 
-
+  const signIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="relative min-h-screen flex items-center justify-center bg-[#0f172a] p-4">
+      {/* Background Glow */}
+      <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-600/30 rounded-full blur-[100px]" />
+
       <Form
-        className="flex flex-col gap-4 rounded-2xl shadow-md py-10 px-6 w-full max-w-md"
+        className="relative z-10 w-full max-w-md bg-[#1e293b] border border-slate-700 p-8 rounded-[2rem] shadow-2xl"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-center font-bold text-3xl mb-5">
-          Welcome to Login
-        </h1>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-slate-400 text-sm">
+            Sign in to continue to your account
+          </p>
+        </div>
 
+        {/* Email */}
         <TextField
           isRequired
           name="email"
           type="email"
-          validate={(value) => {
-            if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
-            ) {
-              return "Please enter a valid email address";
-            }
-            return null;
-          }}
+          className="space-y-2 mb-4"
         >
-          <Label>Email</Label>
-          <Input placeholder="john@example.com" />
-          <FieldError />
+          <Label className="text-sm font-medium text-slate-300">
+            Email
+          </Label>
+
+          <Input
+            placeholder="john@example.com"
+            className="h-12 px-4 rounded-xl bg-[#0f172a] border border-slate-600 text-white"
+          />
+
+          <FieldError className="text-red-400 text-xs" />
         </TextField>
 
+        {/* Password */}
         <TextField
           isRequired
-          minLength={8}
           name="password"
-          type="password"
-          validate={(value) => {
-            if (value.length < 8) {
-              return "Password must be at least 8 characters";
-            }
-            if (!/[A-Z]/.test(value)) {
-              return "Password must contain at least one uppercase letter";
-            }
-            if (!/[0-9]/.test(value)) {
-              return "Password must contain at least one number";
-            }
-            return null;
-          }}
+          type={showPassword ? "text" : "password"}
+          className="space-y-2 mb-6"
         >
-          <Label>Password</Label>
-          <Input placeholder="Enter your password" />
-          <Description>
-            Must be at least 8 characters with 1 uppercase and 1 number
-          </Description>
-          <FieldError />
+          <Label className="text-sm font-medium text-slate-300">
+            Password
+          </Label>
+
+          <Input
+            placeholder="••••••••"
+            className="h-12 px-4 rounded-xl bg-[#0f172a] border border-slate-600 text-white"
+            endContent={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-slate-400 hover:text-white transition"
+              >
+                {showPassword ? (
+                  <EyeSlash size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            }
+          />
+
+          <FieldError className="text-red-400 text-xs" />
         </TextField>
 
-        <div className="flex gap-2">
-          <Button type="submit">
-            <Check />
-            Submit
-          </Button>
+        {/* Login Button */}
+        <Button
+          type="submit"
+          className="h-12 w-full rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all"
+        >
+          <Check />
+          Sign In
+        </Button>
 
-          <Button type="reset" variant="secondary">
-            Reset
-          </Button>
+        {/* Divider */}
+        <div className="flex items-center gap-3 my-6 w-full">
+          <Separator className="flex-1 bg-slate-700" />
+          <span className="text-xs font-medium text-slate-500 uppercase">
+            Or
+          </span>
+          <Separator className="flex-1 bg-slate-700" />
         </div>
+
+        {/* Google Login */}
+        <Button
+          className="h-12 w-full rounded-xl bg-slate-800 border border-slate-700 text-white hover:bg-slate-700 transition-all"
+          onClick={signIn}
+        >
+          <FcGoogle className="text-lg mr-2" />
+          Continue with Google
+        </Button>
       </Form>
     </div>
   );

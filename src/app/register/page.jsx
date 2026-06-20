@@ -1,125 +1,89 @@
-"use client"
+"use client";
 
-import React from 'react';
-import {Check} from "@gravity-ui/icons";
-import {Button, Description, FieldError, Form, Input, Label, TextField} from "@heroui/react";
-import Link from 'next/link';
-import { authClient, useSession } from '@/lib/auth-client';
-
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-
-
+import { authClient } from '@/lib/auth-client';
+import { FcGoogle } from "react-icons/fc";
+import { Form, Input, Button, Label, Select, ListBox, Separator } from "@heroui/react";
 
 const RegisterPage = () => {
+  const router = useRouter();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("user");
 
-  const router=useRouter()
- const {data:session}= useSession()
-      const user=session?.user 
-      console.log("user",user)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
-  
+    const formData = new FormData(e.currentTarget);
+    const dataObj = Object.fromEntries(formData);
 
+    const { data, error } = await authClient.signUp.email({
+      // email: dataObj.email,
+      // password: password,
+      // name: dataObj.name,
+      // image: dataObj.img,
+      // additionalData: { role: role },
 
-      const handleSubmit = async(e) => {
-  e.preventDefault();
+      ...dataObj
+    });
 
-  const formData = new FormData(e.target);
+    if (data) {
+      toast.success("Registration Successful!");
+      router.push("/login");
+    } else if (error) {
+      toast.error(error.message || "Registration failed!");
+    }
+  };
 
-  const formdata= Object.fromEntries(formData);
-
-const { data, error } = await authClient.signUp.email({
-        ...formdata
-});
-      if(data){
-        toast.success("Register Success")
-        router.push("/login")
+  return (
+    <div className='min-h-screen flex items-center justify-center p-6 bg-[#001f3f]'>
+      {/* নীলের বিভিন্ন শেড দিয়ে ব্যাকগ্রাউন্ড গ্লো */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500 rounded-full blur-[150px] opacity-20"></div>
+      
+      <div className="w-full max-w-md bg-[#003366] border border-blue-400/20 p-8 rounded-[2rem] shadow-2xl">
         
-      }
-      if(error){
-        toast.error("Register failed..!")
-      }
-};
+        <div className="text-center mb-8">
+          <h1 className='text-3xl font-bold text-white'>Create Account</h1>
+          <p className="text-blue-200 mt-1">Join our professional legal network</p>
+        </div>
 
+        <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input name="name" label="Full Name" placeholder="John Doe" variant="bordered" className="text-white" />
+          <Input name="email" type="email" label="Email" placeholder="john@example.com" variant="bordered" />
+          
+          <Select label="Role" selectedKeys={[role]} onSelectionChange={(k) => setRole(k.values().next().value)} variant="bordered">
+            <ListBox>
+              <ListBox.Item id="user">User</ListBox.Item>
+              <ListBox.Item id="lawyer">Lawyer</ListBox.Item>
+            </ListBox>
+          </Select>
 
+          <Input type="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} variant="bordered" />
+          <Input type="password" label="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} variant="bordered" />
 
-    return (
-     <div className='flex justify-center items-center min-h-screen '>
-            
-           <Form className="flex  flex-col gap-4  rounded-2xl shadow-md  py-10 px-6" onSubmit={handleSubmit}>
-            <h1 className='text-center font-bold text-3xl mb-15'>Welcome to Register <br /> Your Account</h1>
-      <TextField
-        isRequired
-        name="name"
-        type="text"
-       
-      >
-        <Label>Name</Label>
-        <Input placeholder="Enter Your name" />
-        <FieldError />
-      </TextField>
-      <TextField
-        isRequired
-        name="email"
-        type="email"
-        validate={(value) => {
-          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-            return "Please enter a valid email address";
-          }
-          return null;
-        }}
-      >
-        <Label>Email</Label>
-        <Input placeholder="john@example.com" />
-        <FieldError />
-      </TextField>
-      <TextField
-        isRequired
-        name="img"
-        type="text"
-       
-      >
-        <Label>Image url</Label>
-        <Input placeholder="Enter your image url.." />
-        <FieldError />
-      </TextField>
-      <TextField
-        isRequired
-        minLength={8}
-        name="password"
-        type="password"
-        validate={(value) => {
-          if (value.length < 8) {
-            return "Password must be at least 8 characters";
-          }
-          if (!/[A-Z]/.test(value)) {
-            return "Password must contain at least one uppercase letter";
-          }
-          if (!/[0-9]/.test(value)) {
-            return "Password must contain at least one number";
-          }
-          return null;
-        }}
-      >
-        <Label>Password</Label>
-        <Input placeholder="Enter your password" />
-        <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
-        <FieldError />
-      </TextField>
-      <div className="flex gap-2">
-        <Link href={"/register"}>
-        <Button type="submit">
-          <Check />
-          Submit
-        </Button>
-        </Link>
-        <Button type="reset" variant="secondary">
-          Reset
+          <Button type="submit" className="w-full h-12 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 mt-2">
+            Register Now
+          </Button>
+        </Form>
+
+        <div className='flex items-center gap-3 my-6'>
+          <Separator className="flex-1 bg-blue-800" />
+          <span className='text-xs text-blue-300 uppercase'>Or</span>
+          <Separator className="flex-1 bg-blue-800" />
+        </div>
+
+        <Button onClick={() => authClient.signIn.social({ provider: "google" })} className="w-full h-12 bg-white text-blue-900 font-semibold rounded-xl hover:bg-blue-50">
+          <FcGoogle className="text-xl mr-2" /> Sign up with Google
         </Button>
       </div>
-    </Form>
-     </div>
-    );
+    </div>
+  );
 };
 
 export default RegisterPage;
