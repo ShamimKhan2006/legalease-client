@@ -29,7 +29,7 @@ export default  function AppNavbar () {
   fetchOptions: {
     onSuccess: () => {
       router.push("/login");
-      window.reload() // redirect to login page
+      window.location.reload() // redirect to login page
     },
   },
 });
@@ -102,7 +102,7 @@ export default  function AppNavbar () {
           {/* Auth */}
           <div className="hidden md:flex items-center gap-2">
             {user?  (
-              <Button variant="primary" onClick={handleLogout}>
+              <Button color="primary" onClick={handleLogout}>
                 Logout
               </Button>
             ) : (
