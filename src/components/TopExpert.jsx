@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 const TopExpert = async () => {
-  const res = await fetch("http://localhost:8000/lawyers/top", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/lawyers/top`, {
     cache: "no-store",
   });
   const data = await res.json();

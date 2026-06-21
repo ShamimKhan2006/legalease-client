@@ -5,7 +5,7 @@ import Image from "next/image";
 const LawyersDetailsPage = async ({ params }) => {
   const { id } =await params;
 
-  const res = await fetch(`http://localhost:8000/lawyers/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/${id}`, {
     cache: "no-store",
   });
 

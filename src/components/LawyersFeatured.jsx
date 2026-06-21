@@ -126,13 +126,15 @@ import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 
+
 const LawyersFeatured = async () => {
-  const res = await fetch("http://localhost:8000/lawyers/featured", { cache: "no-store" });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/lawyers/featured`, { cache: "no-store" });
   const lawyers = await res.json();
 
   return (
     <section className="py-24 bg-[#050505]">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4"> 
+      
         <div className="mb-20 text-center">
           <h2 className="text-6xl font-black text-white uppercase tracking-tighter mb-4">
             Elite <span className="text-[#3b82f6]">Counsel</span>

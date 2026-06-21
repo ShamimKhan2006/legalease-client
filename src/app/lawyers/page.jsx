@@ -1,10 +1,22 @@
+
 import Image from "next/image";
 import Link from "next/link";
 
-const LawyersPage = async () => {
-  const res = await fetch("http://localhost:8000/lawyers", {
-    cache: "no-store",
-  });
+ const LawyersPage = async ({searchParams}) => {
+   const category =await searchParams?.category;
+
+//   const res = await fetch("http://localhost:8000/lawyers", {
+//     cache: "no-store",
+//   });
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_URL}/lawyers${
+      category ? `?category=${category}` : ""
+    }`,
+    {
+      cache: "no-store",
+    }
+  );
 
   const lawyers = await res.json();
 
@@ -17,7 +29,8 @@ const LawyersPage = async () => {
               </h2>
               <p className="text-gray-400">Handpicked legal experts for complex challenges</p>
             </div>
-    
+               
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {lawyers.map((lawyer) => (
                 <div
