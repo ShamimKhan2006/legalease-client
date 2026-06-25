@@ -96,9 +96,11 @@ export default  function AppNavbar () {
             {user?  (
               <CustomTrigger handleLogout={handleLogout}/>
             ) : (
-             <Link href={"/login"}>
-              <Button color="primary">Login</Button>
-             </Link>
+            
+              <Link href={"/login"}><Button color="primary" className="w-full">
+               Login
+              </Button></Link>
+              
             )}
           </div>
 
@@ -138,9 +140,11 @@ export default  function AppNavbar () {
                  <CustomTrigger  handleLogout={handleLogout}/>
               </>
             ) : (
-              <Link href={"/"}><Button color="primary" className="w-full">
+      
+              <Link href={"/login"}><Button color="primary" className="w-full">
                Login
               </Button></Link>
+            
             )}
               
           </div>
