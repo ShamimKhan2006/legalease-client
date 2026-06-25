@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
 import { FcGoogle } from "react-icons/fc";
-import { Form, Input, Button, Label, Select, ListBox, Separator } from "@heroui/react";
-
+import { Form, Input, Button, Separator } from "@heroui/react";
+import { Label, Radio, RadioGroup} from "@heroui/react";
 const RegisterPage = () => {
   const router = useRouter();
   const [password, setPassword] = useState("");
@@ -24,11 +24,11 @@ const RegisterPage = () => {
     const dataObj = Object.fromEntries(formData);
 
     const { data, error } = await authClient.signUp.email({
-      // email: dataObj.email,
-      // password: password,
-      // name: dataObj.name,
-      // image: dataObj.img,
-      // additionalData: { role: role },
+       email: dataObj.email,
+       password: password,
+       name: dataObj.name,
+       image: dataObj.img,
+      additionalData: { role: role },
 
       ...dataObj
     });
@@ -54,18 +54,42 @@ const RegisterPage = () => {
         </div>
 
         <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input name="name" label="Full Name" placeholder="John Doe" variant="bordered" className="text-white" />
-          <Input name="email" type="email" label="Email" placeholder="john@example.com" variant="bordered" />
+          <label className='text-white '>Name</label>
+          <Input name="name" label="Full Name" placeholder="Enter Your Name" variant="bordered" className="text-white w-full rounded-xl"/>
+          <label className='text-white '>Email</label>
+          <Input name="email" type="email" label="Email" placeholder="Enter your Email" variant="bordered"  className="w-full rounded-xl"/>
+            <label className='text-white '>Image</label>
+            <Input name="img" type="img" label="Email" placeholder="Enter  Your Image" variant="bordered"  className="w-full rounded-xl"/>
           
-          <Select label="Role" selectedKeys={[role]} onSelectionChange={(k) => setRole(k.values().next().value)} variant="bordered">
-            <ListBox>
-              <ListBox.Item id="user">User</ListBox.Item>
-              <ListBox.Item id="lawyer">Lawyer</ListBox.Item>
-            </ListBox>
-          </Select>
-
-          <Input type="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} variant="bordered" />
-          <Input type="password" label="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} variant="bordered" />
+                  <div className="flex flex-col gap-4">
+      <Label className=' text-white'>Role</Label>
+      <RadioGroup defaultValue="user" name="role" orientation="horizontal" onChange={value => setRole(value)}>
+        <Radio value="user">
+          <Radio.Content>
+            <Radio.Control>
+              <Radio.Indicator />
+            </Radio.Control >
+            <h4 className="text-white">User</h4>
+          </Radio.Content>
+        
+        </Radio>
+        <Radio value="lawyer" >
+          <Radio.Content>
+            <Radio.Control>
+              <Radio.Indicator />
+            </Radio.Control>
+             <h4 className="text-white">Lawyer</h4>
+          </Radio.Content>
+          
+        </Radio>
+       
+      </RadioGroup>
+    </div>
+    
+             <label className='text-white '>Password</label>
+          <Input type="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} variant="bordered"  className="w-full rounded-xl"/>
+          <label className='text-white '>Confirm Password</label>
+          <Input type="password" label="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} variant="bordered"  className="w-full rounded-xl"/>
 
           <Button type="submit" className="w-full h-12 bg-blue-500 text-white font-bold rounded-xl hover:bg-blue-600 mt-2">
             Register Now

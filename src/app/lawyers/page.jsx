@@ -5,9 +5,9 @@ import Link from "next/link";
  const LawyersPage = async ({searchParams}) => {
    const category =await searchParams?.category;
 
-//   const res = await fetch("http://localhost:8000/lawyers", {
-//     cache: "no-store",
-//   });
+  // const res = await fetch("http://localhost:8000/lawyers", {
+  //   cache: "no-store",
+  // });
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/lawyers${
@@ -18,7 +18,8 @@ import Link from "next/link";
     }
   );
 
-  const lawyers = await res.json();
+  const lawyers = await res.json(); 
+  console.log("lawyers",lawyers)
 
   return (
     <section className="py-24 bg-[#050505]">

@@ -15,7 +15,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { Eye } from "lucide-react";
-
+import Link from "next/link";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -72,13 +72,13 @@ const LoginPage = () => {
           type="email"
           className="space-y-2 mb-4"
         >
-          <Label className="text-sm font-medium text-slate-300">
+          <Label className="text-sm font-medium text-slate-300 w-full">
             Email
           </Label>
 
           <Input
             placeholder="john@example.com"
-            className="h-12 px-4 rounded-xl bg-[#0f172a] border border-slate-600 text-white"
+            className="h-12 px-4 rounded-xl bg-[#0f172a] border border-slate-600 text-white w-full"
           />
 
           <FieldError className="text-red-400 text-xs" />
@@ -91,13 +91,13 @@ const LoginPage = () => {
           type={showPassword ? "text" : "password"}
           className="space-y-2 mb-6"
         >
-          <Label className="text-sm font-medium text-slate-300">
+          <Label className="text-sm font-medium text-slate-300 ">
             Password
           </Label>
 
           <Input
             placeholder="••••••••"
-            className="h-12 px-4 rounded-xl bg-[#0f172a] border border-slate-600 text-white"
+            className="h-12 px-4 rounded-xl bg-[#0f172a] border border-slate-600 text-white w-full"
             endContent={
               <button
                 type="button"
@@ -124,7 +124,7 @@ const LoginPage = () => {
           <Check />
           Sign In
         </Button>
-
+         <h2 className="text-white text-center mt-4">Have a an Account ? <span className="border-b"><Link href={"/register"}>register?</Link></span></h2>
         {/* Divider */}
         <div className="flex items-center gap-3 my-6 w-full">
           <Separator className="flex-1 bg-slate-700" />
