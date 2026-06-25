@@ -6,7 +6,7 @@ export default function AdminAnalytics() {
   const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/admin/analytics").then(res => setAnalytics(res.data));
+    axios.get(`${process.env.NEXT_PUBLIC_URL}/admin/analytics`).then(res => setAnalytics(res.data));
   }, []);
 
   if (!analytics) return <p>Loading Analytics...</p>;
