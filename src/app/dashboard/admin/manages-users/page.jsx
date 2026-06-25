@@ -1,17 +1,18 @@
 "use client";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import axios from "react-nav";
+
 
 export default function AdminManageUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/admin/users").then(res => setUsers(res.data));
+    axios.get(`${process.env.NEXT_PUBLIC_URL}/admin/users`).then(res => setUsers(res.data));
   }, []);
 
   const handleChangeRole = async (id, currentRole) => {
     const newRole = currentRole === "user" ? "lawyer" : "user";
-    const res = await axios.patch(`http://localhost:8000/admin/change-role/${id}`, { role: newRole });
+    const res = await axios.patch(`${process.env.NEXT_PUBLIC_URL}/admin/change-role/${id}`, { role: newRole });
     if (res.data.modifiedCount > 0) {
       setUsers(prev => prev.map(u => u._id === id ? { ...u, role: newRole } : u));
     }
@@ -19,7 +20,7 @@ export default function AdminManageUsers() {
 
   const handleDeleteUser = async (id) => {
     if (confirm("Are you sure you want to delete this user?")) {
-      const res = await axios.delete(`http://localhost:8000/admin/users/${id}`);
+      const res = await axios.delete(`${process.env.NEXT_PUBLIC_URL}/${id}`);
       if (res.data.deletedCount > 0) {
         setUsers(prev => prev.filter(u => u._id !== id));
       }

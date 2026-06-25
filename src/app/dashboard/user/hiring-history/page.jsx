@@ -10,7 +10,7 @@ export default function UserHiringHistory() {
 
   useEffect(() => {
     if (session?.user?.email) {
-      axios.get(`http://localhost:8000/user/hiring-history?email=${session.user.email}`)
+      axios.get(`${process.env.NEXT_PUBLIC_URL}/user/hiring-history?email=${session.user.email}`)
         .then(res => {
           setHistory(res.data);
           setLoading(false);
@@ -21,7 +21,7 @@ export default function UserHiringHistory() {
   const handlePayment = async (hire) => {
   try {
     // ১. ব্যাকএন্ড থেকে clientSecret আনা
-    const { data } = await axios.post("http://localhost:8000/create-payment-intent", {
+    const { data } = await axios.post(`${process.env.NEXT_PUBLIC_URL}/create-payment-intent`, {
       amount: hire.lawyerFee, // পেমেন্ট অ্যামাউন্ট
       hireId: hire._id
     });

@@ -11,7 +11,7 @@ export default function LawyerHiringRequests() {
 
   useEffect(() => {
     if (session?.user?.email) {
-      axios.get(`http://localhost:8000/lawyer/hiring-requests?email=${session.user.email}`)
+      axios.get(`${process.env.NEXT_PUBLIC_URL}/lawyer/hiring-requests?email=${session.user.email}`)
         .then(res => setRequests(res.data))
         .catch(err => toast.error("Failed to load requests"));
     }
@@ -19,7 +19,7 @@ export default function LawyerHiringRequests() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await axios.patch(`http://localhost:8000/lawyer/hiring-status/${id}`, { status });
+      const res = await axios.patch(`${process.env.NEXT_PUBLIC_URL}/lawyer/hiring-status/${id}`, { status });
       if (res.data.modifiedCount > 0) {
         setRequests(prev => prev.map(req => req._id === id ? { ...req, status } : req));
         toast.success(`Request ${status} successfully!`);

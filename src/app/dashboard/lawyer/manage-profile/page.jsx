@@ -234,7 +234,7 @@ export default function ManageLegalProfile() {
   const fetchServices = async () => {
     if (session?.user?.email) {
       try {
-        const res = await axios.get(`http://localhost:8000/services?email=${session.user.email}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/services?email=${session.user.email}`);
         setServices(res.data);
       } catch (err) {
         console.error("Error fetching services:", err);
@@ -268,7 +268,7 @@ export default function ManageLegalProfile() {
     if (!session?.user?.email) return toast.error("Session expired. Please log in.");
 
     try {
-      await axios.post("http://localhost:8000/services", { 
+      await axios.post(`${process.env.NEXT_PUBLIC_URL}/services`, { 
         ...formData, 
         fee: parseFloat(formData.fee),
         lawyerEmail: session.user.email 
@@ -283,7 +283,7 @@ export default function ManageLegalProfile() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/services/${id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_URL}/services/${id}`);
       setServices(services.filter((s) => s._id !== id));
       toast.success("Service removed successfully!");
     } catch (err) {

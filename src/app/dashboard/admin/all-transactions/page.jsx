@@ -6,7 +6,7 @@ export default function AdminTransactions() {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/admin/all-transactions")
+    axios.get(`${process.env.NEXT_PUBLIC_URL}/admin/all-transactions`)
       .then(res => setTransactions(res.data));
   }, []);
 

@@ -11,7 +11,7 @@ export default function UserComments() {
 
   useEffect(() => {
     if (session?.user?.email) {
-      axios.get(`http://localhost:8000/user/comments?email=${session.user.email}`)
+      axios.get(`${process.env.NEXT_PUBLIC_URL}/user/comments?email=${session.user.email}`)
         .then(res => setComments(res.data));
     }
   }, [session]);
@@ -22,7 +22,7 @@ export default function UserComments() {
   };
 
   const handleSaveEdit = async (id) => {
-    const res = await axios.put(`http://localhost:8000/user/comments/${id}`, { commentText: editText });
+    const res = await axios.put(`${process.env.NEXT_PUBLIC_URL}/user/comments/${id}`, { commentText: editText });
     if (res.data.modifiedCount > 0) {
       setComments(prev => prev.map(c => c._id === id ? { ...c, commentText: editText } : c));
       setEditingId(null);
@@ -32,7 +32,7 @@ export default function UserComments() {
 
   const handleDelete = async (id) => {
     if (confirm("Delete this comment?")) {
-      const res = await axios.delete(`http://localhost:8000/user/comments/${id}`);
+      const res = await axios.delete(`${process.env.NEXT_PUBLIC_URL}/user/comments/${id}`);
       if (res.data.deletedCount > 0) {
         setComments(prev => prev.filter(c => c._id !== id));
       }
