@@ -6,6 +6,7 @@ const TopExpert = async () => {
     cache: "no-store",
   });
   const data = await res.json();
+   console.log("top data",data)
 
   return (
     <section className="  relative py-20 px-4 md:px-10 bg-[#0f172a] overflow-hidden">

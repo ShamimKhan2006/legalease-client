@@ -9,7 +9,7 @@ import Link from 'next/link';
 const LawyersFeatured = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/lawyers/featured`, { cache: "no-store" });
   const lawyers = await res.json();
-
+      console.log("lawyers",lawyers)
   return (
     <section className="py-24 bg-[#050505]">
       <div className="max-w-7xl mx-auto px-4"> 

@@ -4,8 +4,9 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
 const client = new MongoClient(process.env.MONGODB_URL);
 
-// await সরিয়ে দিন - mongodbAdapter নিজেই connection handle করে
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  secret: process.env.BETTER_AUTH_SECRET,
   emailAndPassword: { 
     enabled: true, 
   },
@@ -16,6 +17,10 @@ export const auth = betterAuth({
     }, 
   }, 
   database: mongodbAdapter(client.db("legalease")),
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://legalease-client-kappa.vercel.app"
+  ],
   user: {
     additionalFields: {
       role: {
