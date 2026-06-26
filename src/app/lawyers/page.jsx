@@ -2,9 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
- const LawyersPage = async ({searchParams}) => {
-   const category =await searchParams?.category;
 
+   const LawyersPage = async ({ searchParams }) => {
+  const params = await searchParams;
+  const category = params?.category;
   // const res = await fetch("http://localhost:8000/lawyers", {
   //   cache: "no-store",
   // });

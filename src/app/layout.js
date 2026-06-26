@@ -4,7 +4,7 @@ import AppNavber from "@/components/AppNavber";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 
-
+import { ThemeProvider } from "next-themes";
 
 const roboto = Roboto({
   variable: "--font-geist-mono",
@@ -19,13 +19,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en" data-theme="light"
+      lang="en" data-theme="light" suppressHydrationWarning
       className={`${roboto.variable}  h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col   bg-slate-900">
         <Toaster />
         <AppNavber/>
-        <main>{children}</main>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+        </ThemeProvider>
         <Footer/>
         </body>
     </html>

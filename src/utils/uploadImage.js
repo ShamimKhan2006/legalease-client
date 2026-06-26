@@ -6,7 +6,6 @@ export const uploadImageToImgBB = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
 
-  // এখানে আপনার আসল imgBB API Key বসাবেন
   const IMGBB_API_KEY = "43787558b3dbd819f29959cd9ee89653"; 
 
   try {
@@ -15,10 +14,10 @@ export const uploadImageToImgBB = async (file) => {
       formData
     );
     
-    // সফলভাবে আপলোড হলে ছবি'র Direct URL রিটার্ন করবে
+
     return response.data.data.display_url; 
   } catch (error) {
     console.error("imgBB Upload Error:", error);
-    throw new Error("ইমেজ আপলোড করতে সমস্যা হয়েছে।");
+    throw new Error("This image is problem");
   }
 };

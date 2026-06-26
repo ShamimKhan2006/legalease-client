@@ -1,19 +1,19 @@
 "use client";
 import { useSession } from "@/lib/auth-client";
-// সেশন হুক ইম্পোর্ট করুন
+
 import { toast } from "react-hot-toast";
 
 export default function HireButton() {
-  const { data: session } = useSession(); // সেশন ডাটা নিন
+  const { data: session } = useSession(); 
 
   const handleHire = () => {
-    // সেশন না থাকলে বা ইউজার লগইন না থাকলে
+  
     if (!session || !session.user) {
       toast.error("Please login to hire!");
-      return; // ফর্ম সাবমিশন বন্ধ করুন
+      return; 
     }
 
-    // সেশন থাকলে ফর্ম সাবমিট করুন
+  
     document.getElementById("payment-form").submit();
   };
 

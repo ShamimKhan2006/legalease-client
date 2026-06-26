@@ -1,30 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@heroui/react";
 import { Scale, Gavel, Shield, Briefcase } from "lucide-react";
 
 const slides = [
-  {
-    title: "Find Trusted Lawyers Instantly",
-    desc: "Connect with verified legal experts for your case in minutes.",
-    icon: Scale,
-  },
-  {
-    title: "Get Legal Advice Anytime",
-    desc: "Chat with professional lawyers 24/7 for guidance.",
-    icon: Gavel,
-  },
-  {
-    title: "Secure & Confidential Support",
-    desc: "Your legal matters are always protected and private.",
-    icon: Shield,
-  },
-  {
-    title: "Hire Experts for Your Case",
-    desc: "From family law to corporate cases — choose the right lawyer.",
-    icon: Briefcase,
-  },
+  { title: "Find Trusted Lawyers Instantly", desc: "Connect with verified legal experts for your case in minutes.", icon: Scale },
+  { title: "Get Legal Advice Anytime", desc: "Chat with professional lawyers 24/7 for guidance.", icon: Gavel },
+  { title: "Secure & Confidential Support", desc: "Your legal matters are always protected and private.", icon: Shield },
+  { title: "Hire Experts for Your Case", desc: "From family law to corporate cases — choose the right lawyer.", icon: Briefcase },
 ];
 
 export default function HeroBanner() {
@@ -33,58 +18,61 @@ export default function HeroBanner() {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
-    }, 4000);
-
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const ActiveIcon = slides[index].icon;
-
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-r from-slate-900 to-slate-800 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-24 flex flex-col items-center text-center">
-        
-        {/* Icon */}
-        <div className="mb-6 p-4 rounded-full bg-white/10">
-          <ActiveIcon size={48} />
-        </div>
+    <section className="relative w-full overflow-hidden bg-slate-950 py-24 px-6">
+      {/* Dynamic Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/20 blur-[150px] rounded-full pointer-events-none" />
 
-        {/* Title */}
-        <h1 className="text-3xl md:text-5xl font-bold mb-4 transition-all duration-500">
-          {slides[index].title}
-        </h1>
+      <div className="max-w-5xl mx-auto text-center relative z-10">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Icon */}
+            <div className="mb-8 p-4 rounded-3xl bg-white/5 border border-white/10 inline-block">
+              {(() => {
+                const Icon = slides[index].icon;
+                return <Icon size={40} className="text-blue-400" />;
+              })()}
+            </div>
 
-        {/* Description */}
-        <p className="text-gray-300 max-w-2xl mb-8">
-          {slides[index].desc}
-        </p>
+            {/* Title & Desc */}
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
+              {slides[index].title}
+            </h1>
+            <p className="text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+              {slides[index].desc}
+            </p>
+          </motion.div>
+        </AnimatePresence>
 
         {/* CTA Buttons */}
-        <div className="flex gap-4">
-          <Button color="primary" size="lg">
-            Find Lawyers
-          </Button>
-          <Button variant="flat" size="lg">
-            Learn More
-          </Button>
+        <div className="flex gap-4 justify-center">
+          <Button color="primary" size="lg" className="font-bold px-8">Find Lawyers</Button>
+          <Button variant="bordered" size="lg" className="text-white border-white/20 hover:bg-white/10">Learn More</Button>
         </div>
 
-        {/* Dots */}
-        <div className="flex gap-2 mt-10">
+        {/* Progress Dots */}
+        <div className="flex gap-3 justify-center mt-16">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`h-2 w-6 rounded-full transition-all ${
-                i === index ? "bg-white" : "bg-white/30"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === index ? "w-12 bg-blue-500" : "w-6 bg-white/20"
               }`}
             />
           ))}
         </div>
       </div>
-
-      {/* Background glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
     </section>
   );
 }

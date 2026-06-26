@@ -3,87 +3,75 @@
 import Link from "next/link";
 import { Button, Input } from "@heroui/react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
-import { CiTwitter } from "react-icons/ci";
-
-// Gravity UI Icons
-
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-12 grid gap-10 md:grid-cols-3">
+    <footer className="relative bg-slate-950 text-slate-300 border-t border-white/10 overflow-hidden">
+      {/* Premium subtle glow effect in the background */}
+      <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-indigo-500/10 blur-[120px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 py-20 grid gap-12 md:grid-cols-2 lg:grid-cols-4 relative z-10">
         
-        {/* About */}
-        <div>
-          <h2 className="text-2xl font-bold mb-3">LegalEase</h2>
-          <p className="text-gray-400">
-            Connect with trusted lawyers anytime, anywhere. Fast, secure, and reliable legal support platform.
+        {/* Brand Section */}
+        <div className="space-y-4">
+          <h2 className="text-3xl font-bold text-white tracking-tight">LegalEase</h2>
+          <p className="text-sm leading-relaxed text-slate-400">
+            Professional legal support, simplified. Trusted by thousands for secure, reliable, and instant legal connections.
           </p>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-          <ul className="space-y-2 text-gray-400">
-            <li>
-              <Link href="/about" className="hover:text-white">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-white">
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacy" className="hover:text-white">
-                Privacy Policy
-              </Link>
-            </li>
+          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Platform</h3>
+          <ul className="space-y-4 text-sm">
+            {["About Us", "Legal Services", "Contact", "Privacy Policy"].map((item) => (
+              <li key={item}>
+                <Link href={`/${item.toLowerCase().replace(" ", "-")}`} className="hover:text-blue-400 transition-colors duration-300">
+                  {item}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Newsletter */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">
-            Newsletter Signup
-          </h3>
-
-          <p className="text-gray-400 mb-3">
-            Get updates about new lawyers & legal tips.
-          </p>
-
-          <div className="flex gap-2">
+        {/* Newsletter - High Contrast Card */}
+        <div className="lg:col-span-2 bg-slate-900/50 p-8 rounded-3xl border border-white/5 backdrop-blur-xl">
+          <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-2">Join our Newsletter</h3>
+          <p className="text-sm text-slate-400 mb-6">Receive expert legal tips and updates.</p>
+          
+          <div className="flex flex-col sm:flex-row gap-3">
             <Input
-              placeholder="Enter your email"
-              className="bg-white rounded-lg"
+              placeholder="name@email.com"
+              className="bg-transparent"
+              classNames={{
+                input: "bg-slate-950/50",
+                inputWrapper: "bg-slate-950/50 border border-white/10 hover:border-blue-500/50"
+              }}
             />
-            <Button color="primary">
+            <Button color="primary" className="bg-blue-600 font-semibold shadow-lg shadow-blue-900/20">
               Subscribe
             </Button>
-          </div>
-
-          {/* Social Icons (Gravity UI) */}
-          <div className="flex gap-4 mt-5 text-white/70">
-            <a href="#" className="hover:text-blue-500">
-              <FaFacebookF width={20} height={20} />
-            </a>
-            <a href="#" className="hover:text-sky-400">
-              <CiTwitter  width={20} height={20} />
-            </a>
-            <a href="#" className="hover:text-pink-500">
-              <FaInstagram width={20} height={20} />
-            </a>
-            <a href="#" className="hover:text-blue-400">
-              <FaLinkedinIn width={20} height={20} />
-            </a>
           </div>
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="border-t border-gray-700 py-4 text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} LegalEase. All rights reserved.
+      {/* Bottom Bar */}
+      <div className="max-w-7xl mx-auto px-6 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="text-xs text-slate-500">
+          © {new Date().getFullYear()} LegalEase Inc. All rights reserved.
+        </p>
+        
+        <div className="flex gap-6">
+          {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, idx) => (
+            <a 
+              key={idx} 
+              href="#" 
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-blue-600 transition-all duration-300 hover:scale-110"
+            >
+              <Icon size={16} />
+            </a>
+          ))}
+        </div>
       </div>
     </footer>
   );

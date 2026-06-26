@@ -11,10 +11,7 @@ export default function DashboardLayout({ children }) {
         <DashboardSidebar />
       </div>
 
-      {/* Mobile Drawer */}
-      {/* <div className="md:hidden fixed top-4 left-4 z-50">
-        <DashboardDrawer/>
-      </div> */}
+      
 
       {/* Main Content */}
       <main className="flex-1 p-6">

@@ -102,7 +102,7 @@ const RegisterPage = () => {
           <Separator className="flex-1 bg-blue-800" />
         </div>
 
-        <Button onClick={() => authClient.signIn.social({ provider: "google" })} className="w-full h-12 bg-white text-blue-900 font-semibold rounded-xl hover:bg-blue-50">
+        <Button onClick={() => authClient.signIn.social({ provider: "google" })} className="w-full h-12 bg-slate-800 text-white font-semibold rounded-xl hover:bg-blue-50">
           <FcGoogle className="text-xl mr-2" /> Sign up with Google
         </Button>
       </div>
