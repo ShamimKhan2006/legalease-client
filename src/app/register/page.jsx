@@ -129,7 +129,7 @@ import {
   HiBriefcase, HiCheckCircle, HiUpload
 } from "react-icons/hi";
 
-const IMGBB_API_KEY =process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+;
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -161,7 +161,7 @@ const RegisterPage = () => {
       formData.append("image", file);
 
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         { method: "POST", body: formData }
       );
       const data = await res.json();
@@ -316,35 +316,30 @@ const RegisterPage = () => {
             </div>
 
             {/* Role */}
-            <div className="flex flex-col gap-2">
-              <label className="text-blue-200 text-sm font-medium">Role</label>
-              <div className="flex gap-3">
-                {["user", "lawyer"].map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRole(r)}
-                    className="flex-1 h-11 rounded-xl flex items-center justify-center gap-2 font-medium text-sm capitalize transition-all duration-200"
-                    style={
-                      role === r
-                        ? {
-                            background: "linear-gradient(135deg,#1d4ed8,#3b82f6)",
-                            color: "white",
-                            border: "1.5px solid transparent",
-                            boxShadow: "0 2px 12px rgba(59,130,246,0.3)"
-                          }
-                        : {
-                            background: "rgba(255,255,255,0.05)",
-                            color: "rgba(147,197,253,0.8)",
-                            border: "1.5px solid rgba(96,165,250,0.25)"
-                          }
-                    }>
-                    {r === "user" ? <HiUser className="text-base" /> : <HiBriefcase className="text-base" />}
-                    {r === "user" ? "User" : "Lawyer"}
-                  </button>
-                ))}
-              </div>
-            </div>
+              <div className="flex flex-col gap-4">
+      <Label className=' text-white'>Role</Label>
+      <RadioGroup defaultValue="user" name="role" orientation="horizontal" onChange={value => setRole(value)}>
+        <Radio value="user">
+          <Radio.Content>
+            <Radio.Control>
+              <Radio.Indicator />
+            </Radio.Control >
+            <h4 className="text-white">User</h4>
+          </Radio.Content>
+        
+        </Radio>
+        <Radio value="lawyer" >
+          <Radio.Content>
+            <Radio.Control>
+              <Radio.Indicator />
+            </Radio.Control>
+             <h4 className="text-white">Lawyer</h4>
+          </Radio.Content>
+          
+        </Radio>
+       
+      </RadioGroup>
+    </div>
 
             {/* Password */}
             <div className="flex flex-col gap-1.5">
