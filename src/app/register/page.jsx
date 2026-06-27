@@ -45,9 +45,9 @@
 //     <div className='min-h-screen flex items-center justify-center p-6 bg-[#001f3f]'>
 //       {/* নীলের বিভিন্ন শেড দিয়ে ব্যাকগ্রাউন্ড গ্লো */}
 //       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500 rounded-full blur-[150px] opacity-20"></div>
-      
+
 //       <div className="w-full max-w-md bg-[#003366] border border-blue-400/20 p-8 rounded-[2rem] shadow-2xl">
-        
+
 //         <div className="text-center mb-8">
 //           <h1 className='text-3xl font-bold text-white'>Create Account</h1>
 //           <p className="text-blue-200 mt-1">Join our professional legal network</p>
@@ -60,7 +60,7 @@
 //           <Input name="email" type="email" label="Email" placeholder="Enter your Email" variant="bordered"  className="w-full rounded-xl"/>
 //             <label className='text-white '>Image</label>
 //             <Input name="img" type="img" label="Email" placeholder="Enter  Your Image" variant="bordered"  className="w-full rounded-xl"/>
-          
+
 //                   <div className="flex flex-col gap-4">
 //       <Label className=' text-white'>Role</Label>
 //       <RadioGroup defaultValue="user" name="role" orientation="horizontal" onChange={value => setRole(value)}>
@@ -71,7 +71,7 @@
 //             </Radio.Control >
 //             <h4 className="text-white">User</h4>
 //           </Radio.Content>
-        
+
 //         </Radio>
 //         <Radio value="lawyer" >
 //           <Radio.Content>
@@ -80,12 +80,12 @@
 //             </Radio.Control>
 //              <h4 className="text-white">Lawyer</h4>
 //           </Radio.Content>
-          
+
 //         </Radio>
-       
+
 //       </RadioGroup>
 //     </div>
-    
+
 //              <label className='text-white '>Password</label>
 //           <Input type="password" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} variant="bordered"  className="w-full rounded-xl"/>
 //           <label className='text-white '>Confirm Password</label>
@@ -112,24 +112,22 @@
 
 // export default RegisterPage;
 
-
-
-
-
-
 "use client";
-import { Label, Radio, RadioGroup} from "@heroui/react";
-import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
-import { authClient } from '@/lib/auth-client';
+import { Label, Radio, RadioGroup } from "@heroui/react";
+import React, { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 import { FcGoogle } from "react-icons/fc";
 import {
-  HiUser, HiMail, HiLockClosed, HiPhotograph,
-  HiBriefcase, HiCheckCircle, HiUpload
+  HiUser,
+  HiMail,
+  HiLockClosed,
+  HiPhotograph,
+  HiBriefcase,
+  HiCheckCircle,
+  HiUpload,
 } from "react-icons/hi";
-
-;
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -162,9 +160,10 @@ const RegisterPage = () => {
 
       const res = await fetch(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
-        { method: "POST", body: formData }
+        { method: "POST", body: formData },
       );
       const data = await res.json();
+      console.log("Img", data);
 
       if (data.success) {
         setImgUrl(data.data.url);
@@ -192,7 +191,7 @@ const RegisterPage = () => {
       password,
       name,
       image: imgUrl,
-      additionalData: { role },
+      role,
     });
     setLoading(false);
 
@@ -208,19 +207,34 @@ const RegisterPage = () => {
     background: "rgba(255,255,255,0.06)",
     border: "1.5px solid rgba(96,165,250,0.25)",
   };
-  const inputFocus = (e) => (e.target.style.border = "1.5px solid rgba(96,165,250,0.7)");
-  const inputBlur = (e) => (e.target.style.border = "1.5px solid rgba(96,165,250,0.25)");
+  const inputFocus = (e) =>
+    (e.target.style.border = "1.5px solid rgba(96,165,250,0.7)");
+  const inputBlur = (e) =>
+    (e.target.style.border = "1.5px solid rgba(96,165,250,0.25)");
 
   return (
     <div
       className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
-      style={{ background: "linear-gradient(135deg, #000d1a 0%, #001f3f 50%, #00152e 100%)" }}>
-
+      style={{
+        background:
+          "linear-gradient(135deg, #000d1a 0%, #001f3f 50%, #00152e 100%)",
+      }}
+    >
       {/* Background glows */}
-      <div className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)" }} />
-      <div className="absolute bottom-[-60px] left-[-60px] w-[280px] h-[280px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)" }} />
+      <div
+        className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute bottom-[-60px] left-[-60px] w-[280px] h-[280px] rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)",
+        }}
+      />
 
       <div className="w-full max-w-[440px] relative z-10 my-6">
         <div
@@ -228,32 +242,46 @@ const RegisterPage = () => {
           style={{
             background: "rgba(0, 30, 65, 0.88)",
             border: "1px solid rgba(96,165,250,0.18)",
-            backdropFilter: "blur(16px)"
-          }}>
-
+            backdropFilter: "blur(16px)",
+          }}
+        >
           {/* Header */}
           <div className="text-center mb-7">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
-              style={{ background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)" }}>
+            <div
+              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
+              style={{
+                background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)",
+              }}
+            >
               <HiBriefcase className="text-white text-2xl" />
             </div>
-            <h1 className="text-[26px] font-bold text-white tracking-tight">Create Account</h1>
-            <p className="text-blue-300 mt-1 text-sm">Join our professional legal network</p>
+            <h1 className="text-[26px] font-bold text-white tracking-tight">
+              Create Account
+            </h1>
+            <p className="text-blue-300 mt-1 text-sm">
+              Join our professional legal network
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
             {/* Name */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">Full Name</label>
+              <label className="text-blue-200 text-sm font-medium">
+                Full Name
+              </label>
               <div className="relative">
                 <HiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
                 <input
-                  type="text" required value={name}
-                  onChange={e => setName(e.target.value)}
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your name"
                   className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
+                  style={inputStyle}
+                  onFocus={inputFocus}
+                  onBlur={inputBlur}
+                />
               </div>
             </div>
 
@@ -263,38 +291,54 @@ const RegisterPage = () => {
               <div className="relative">
                 <HiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
                 <input
-                  type="email" required value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
+                  style={inputStyle}
+                  onFocus={inputFocus}
+                  onBlur={inputBlur}
+                />
               </div>
             </div>
 
             {/* Image Upload (ImgBB) */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">Profile Photo</label>
+              <label className="text-blue-200 text-sm font-medium">
+                Profile Photo
+              </label>
               <div
                 className="w-full rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-200 px-4"
                 style={{
                   ...inputStyle,
                   height: "52px",
-                  border: "1.5px dashed rgba(96,165,250,0.4)"
+                  border: "1.5px dashed rgba(96,165,250,0.4)",
                 }}
-                onClick={() => fileInputRef.current.click()}>
+                onClick={() => fileInputRef.current.click()}
+              >
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={handleImageUpload} />
+                  onChange={handleImageUpload}
+                />
 
                 {imgPreview ? (
                   <>
-                    <img src={imgPreview} alt="preview"
-                      className="w-9 h-9 rounded-full object-cover border-2 border-blue-400" />
+                    <img
+                      src={imgPreview}
+                      alt="preview"
+                      className="w-9 h-9 rounded-full object-cover border-2 border-blue-400"
+                    />
                     <span className="text-blue-300 text-sm flex-1 truncate">
-                      {imgUploading ? "Uploading..." : (imgUrl ? "Photo uploaded ✓" : "Preview only...")}
+                      {imgUploading
+                        ? "Uploading..."
+                        : imgUrl
+                          ? "Photo uploaded ✓"
+                          : "Preview only..."}
                     </span>
                     {imgUploading && (
                       <span className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
@@ -302,8 +346,10 @@ const RegisterPage = () => {
                   </>
                 ) : (
                   <>
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center"
-                      style={{ background: "rgba(59,130,246,0.15)" }}>
+                    <div
+                      className="w-9 h-9 rounded-full flex items-center justify-center"
+                      style={{ background: "rgba(59,130,246,0.15)" }}
+                    >
                       <HiPhotograph className="text-blue-400 text-lg" />
                     </div>
                     <span className="text-blue-400 text-sm">
@@ -316,71 +362,81 @@ const RegisterPage = () => {
             </div>
 
             {/* Role */}
-              <div className="flex flex-col gap-4">
-      <Label className=' text-white'>Role</Label>
-      <RadioGroup defaultValue="user" name="role" orientation="horizontal" onChange={value => setRole(value)}>
-        <Radio value="user">
-          <Radio.Content>
-            <Radio.Control>
-              <Radio.Indicator />
-            </Radio.Control >
-            <h4 className="text-white">User</h4>
-          </Radio.Content>
-        
-        </Radio>
-        <Radio value="lawyer" >
-          <Radio.Content>
-            <Radio.Control>
-              <Radio.Indicator />
-            </Radio.Control>
-             <h4 className="text-white">Lawyer</h4>
-          </Radio.Content>
-          
-        </Radio>
-       
-      </RadioGroup>
-    </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-white">Role</Label>
+              <RadioGroup
+                defaultValue="user"
+                name="role"
+                orientation="horizontal"
+                onValueChange={(value) => setRole(value)}
+                classNames={{
+                  wrapper: "gap-6",
+                }}
+              >
+                <Radio value="user" classNames={{ label: "text-white" }}>
+                  User
+                </Radio>
+                <Radio value="lawyer" classNames={{ label: "text-white" }}>
+                  Lawyer
+                </Radio>
+              </RadioGroup>
+            </div>
 
             {/* Password */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">Password</label>
+              <label className="text-blue-200 text-sm font-medium">
+                Password
+              </label>
               <div className="relative">
                 <HiLockClosed className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
                 <input
-                  type="password" required value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={inputStyle} onFocus={inputFocus} onBlur={inputBlur} />
+                  style={inputStyle}
+                  onFocus={inputFocus}
+                  onBlur={inputBlur}
+                />
               </div>
             </div>
 
             {/* Confirm Password */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">Confirm Password</label>
+              <label className="text-blue-200 text-sm font-medium">
+                Confirm Password
+              </label>
               <div className="relative">
                 <HiLockClosed className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
                 <input
-                  type="password" required value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
                   style={{
                     ...inputStyle,
-                    border: confirmPassword && confirmPassword !== password
-                      ? "1.5px solid rgba(239,68,68,0.6)"
-                      : inputStyle.border
+                    border:
+                      confirmPassword && confirmPassword !== password
+                        ? "1.5px solid rgba(239,68,68,0.6)"
+                        : inputStyle.border,
                   }}
                   onFocus={inputFocus}
-                  onBlur={e => {
+                  onBlur={(e) => {
                     e.target.style.border =
                       confirmPassword && confirmPassword !== password
                         ? "1.5px solid rgba(239,68,68,0.6)"
                         : "1.5px solid rgba(96,165,250,0.25)";
-                  }} />
+                  }}
+                />
               </div>
               {confirmPassword && confirmPassword !== password && (
-                <p className="text-red-400 text-xs mt-0.5">Passwords do not match</p>
+                <p className="text-red-400 text-xs mt-0.5">
+                  Passwords do not match
+                </p>
               )}
             </div>
 
@@ -391,8 +447,9 @@ const RegisterPage = () => {
               className="w-full h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2 mt-2 transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
               style={{
                 background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)",
-                boxShadow: "0 4px 20px rgba(59,130,246,0.35)"
-              }}>
+                boxShadow: "0 4px 20px rgba(59,130,246,0.35)",
+              }}
+            >
               {loading ? (
                 <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
@@ -406,9 +463,17 @@ const RegisterPage = () => {
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px" style={{ background: "rgba(96,165,250,0.2)" }} />
-            <span className="text-xs text-blue-400 uppercase tracking-widest font-medium">Or</span>
-            <div className="flex-1 h-px" style={{ background: "rgba(96,165,250,0.2)" }} />
+            <div
+              className="flex-1 h-px"
+              style={{ background: "rgba(96,165,250,0.2)" }}
+            />
+            <span className="text-xs text-blue-400 uppercase tracking-widest font-medium">
+              Or
+            </span>
+            <div
+              className="flex-1 h-px"
+              style={{ background: "rgba(96,165,250,0.2)" }}
+            />
           </div>
 
           {/* Google Button */}
@@ -417,10 +482,15 @@ const RegisterPage = () => {
             className="w-full h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-3 transition-all duration-200 active:scale-[0.98]"
             style={{
               background: "rgba(255,255,255,0.07)",
-              border: "1.5px solid rgba(255,255,255,0.15)"
+              border: "1.5px solid rgba(255,255,255,0.15)",
             }}
-            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.12)"}
-            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}>
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.07)")
+            }
+          >
             <FcGoogle className="text-xl" />
             Sign up with Google
           </button>
@@ -428,7 +498,10 @@ const RegisterPage = () => {
           {/* Login Link */}
           <p className="text-center text-sm text-blue-300 mt-5">
             Already have an account?{" "}
-            <a href="/login" className="text-blue-400 font-semibold hover:text-blue-300 transition-colors underline underline-offset-2">
+            <a
+              href="/login"
+              className="text-blue-400 font-semibold hover:text-blue-300 transition-colors underline underline-offset-2"
+            >
               Sign in
             </a>
           </p>
