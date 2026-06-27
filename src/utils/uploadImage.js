@@ -6,7 +6,7 @@ export const uploadImageToImgBB = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
 
-  const NEXT_PUBLIC_IMGBB_API_KEY =process.env.NEXT_PUBLIC_IMGBB_API_KEY
+  const NEXT_PUBLIC_IMGBB_API_KEY=process.env.NEXT_PUBLIC_IMGBB_API_KEY
   
 
   try {
