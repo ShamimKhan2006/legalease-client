@@ -6,12 +6,12 @@ export const uploadImageToImgBB = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
 
-  const IMGBB_API_KEY =process.env.IMGBB_API_KEY
+  const NEXT_PUBLIC_IMGBB_API_KEY =process.env.NEXT_PUBLIC_IMGBB_API_KEY
   
 
   try {
     const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+      `https://api.imgbb.com/1/upload?key=${NEXT_PUBLIC_IMGBB_API_KEY}`,
       formData
     );
     
