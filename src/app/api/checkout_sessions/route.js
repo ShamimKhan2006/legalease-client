@@ -112,7 +112,7 @@ export async function POST(req) {
     const clientEmail = formData.get("clientEmail");
 
     // Backend-এ hiring record তৈরি — সব info সহ
-    const hiringRes = await fetch("http://localhost:8000/hirings", {
+    const hiringRes = await fetch(`${process.env.NEXT_PUBLIC_URL}/hirings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

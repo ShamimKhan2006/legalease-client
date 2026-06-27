@@ -11,7 +11,7 @@ export default function SuccessPage() {
   useEffect(() => {
     if (hireId) {
       // hiring status "paid" করুন
-      fetch(`http://localhost:8000/lawyer/hiring-status/${hireId}`, {
+      fetch(`${process.env.NEXT_PUBLIC_URL}/lawyer/hiring-status/${hireId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "paid" }),

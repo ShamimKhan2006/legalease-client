@@ -6,7 +6,8 @@ export const uploadImageToImgBB = async (file) => {
   const formData = new FormData();
   formData.append("image", file);
 
-  const IMGBB_API_KEY = "43787558b3dbd819f29959cd9ee89653"; 
+  const IMGBB_API_KEY =process.env.IMGBB_API_KEY
+  
 
   try {
     const response = await axios.post(

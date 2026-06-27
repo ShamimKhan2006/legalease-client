@@ -4,23 +4,42 @@ import HireButton from "@/components/HireButton";
 import { Star, Clock, DollarSign, Shield } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 
 const LawyersDetailsPage = async ({ params }) => {
   const { id } = await params;
-    const session = await auth.api.getSession({
+
+  if (["featured", "top"].includes(id)) {
+    notFound();
+  }
+
+  const session = await auth.api.getSession({
     headers: await headers(),
- });
+  });
+
   const [lawyerRes, reviewsRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_URL}/lawyers/${id}`, { cache: "no-store" }),
-    fetch(`${process.env.NEXT_PUBLIC_URL}/reviews/${id}`, { cache: "no-store" }),
+    fetch(`${process.env.NEXT_PUBLIC_URL}/lawyers/${id}`, {
+      cache: "no-store",
+    }),
+    fetch(`${process.env.NEXT_PUBLIC_URL}/reviews/${id}`, {
+      cache: "no-store",
+    }),
   ]);
 
+  if (!lawyerRes.ok) {
+    notFound();
+  }
+
   const lawyer = await lawyerRes.json();
+
+  if (!lawyer || !lawyer._id) {
+    notFound();
+  }
+
   const reviews = reviewsRes.ok ? await reviewsRes.json() : [];
 
   return (
     <div className="min-h-screen bg-slate-950">
-
       {/* Hero Banner */}
       <div className="relative overflow-hidden">
         {/* Background glow */}
@@ -29,7 +48,6 @@ const LawyersDetailsPage = async ({ params }) => {
 
         <div className="relative max-w-6xl mx-auto px-6 py-16">
           <div className="flex flex-col md:flex-row gap-10 items-center md:items-start">
-
             {/* Avatar */}
             <div className="relative shrink-0">
               <div className="absolute inset-0 bg-indigo-600 rounded-3xl blur-2xl opacity-20 scale-110" />
@@ -41,12 +59,16 @@ const LawyersDetailsPage = async ({ params }) => {
                 className="relative w-40 h-40 md:w-44 md:h-44 rounded-3xl object-cover ring-2 ring-white/10"
               />
               {/* Status dot */}
-              <div className={`absolute -bottom-2 -right-2 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
-                lawyer.isBusy
-                  ? "bg-red-500/10 border-red-500/30 text-red-400"
-                  : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-              }`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${lawyer.isBusy ? "bg-red-400" : "bg-emerald-400"} animate-pulse`} />
+              <div
+                className={`absolute -bottom-2 -right-2 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
+                  lawyer.isBusy
+                    ? "bg-red-500/10 border-red-500/30 text-red-400"
+                    : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                }`}
+              >
+                <div
+                  className={`w-1.5 h-1.5 rounded-full ${lawyer.isBusy ? "bg-red-400" : "bg-emerald-400"} animate-pulse`}
+                />
                 {lawyer.isBusy ? "Busy" : "Available"}
               </div>
             </div>
@@ -57,33 +79,55 @@ const LawyersDetailsPage = async ({ params }) => {
                 <Shield size={12} />
                 Verified Lawyer
               </div>
-              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">{lawyer.name}</h1>
-              <p className="text-indigo-400 font-semibold text-lg mt-2">{lawyer.specialization}</p>
+              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                {lawyer.name}
+              </h1>
+              <p className="text-indigo-400 font-semibold text-lg mt-2">
+                {lawyer.specialization}
+              </p>
 
               <div className="flex flex-wrap gap-3 mt-6 justify-center md:justify-start">
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
                   <DollarSign size={14} className="text-indigo-400" />
-                  <span className="text-white text-sm font-bold">${lawyer.hourlyRate}/hr</span>
+                  <span className="text-white text-sm font-bold">
+                    ${lawyer.hourlyRate}/hr
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
                   <Clock size={14} className="text-indigo-400" />
-                  <span className="text-white text-sm font-bold">5+ Years Exp.</span>
+                  <span className="text-white text-sm font-bold">
+                    5+ Years Exp.
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl">
                   <Star size={14} className="text-amber-400 fill-amber-400" />
-                  <span className="text-white text-sm font-bold">4.9 ({reviews.length} reviews)</span>
+                  <span className="text-white text-sm font-bold">
+                    4.9 ({reviews.length} reviews)
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* Hire Button */}
             <div className="shrink-0 w-full md:w-48">
-             < form id="payment-form" action="/api/checkout_sessions" method="POST">
-      <input type="hidden" name="lawyerId" value={id} />
-      <input type="hidden" name="clientName" value={session?.user?.name || ""} />
-      <input type="hidden" name="clientEmail" value={session?.user?.email || ""} />
-      <HireButton />
-    </form>
+              <form
+                id="payment-form"
+                action="/api/checkout_sessions"
+                method="POST"
+              >
+                <input type="hidden" name="lawyerId" value={id} />
+                <input
+                  type="hidden"
+                  name="clientName"
+                  value={session?.user?.name || ""}
+                />
+                <input
+                  type="hidden"
+                  name="clientEmail"
+                  value={session?.user?.email || ""}
+                />
+                <HireButton />
+              </form>
             </div>
           </div>
         </div>
@@ -92,23 +136,26 @@ const LawyersDetailsPage = async ({ params }) => {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 pb-16">
         <div className="grid md:grid-cols-3 gap-6">
-
           {/* Left — About + Reviews */}
           <div className="md:col-span-2 space-y-6">
-
             {/* About */}
             <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
               <h2 className="text-xl font-bold text-white mb-4">About</h2>
               <p className="text-slate-400 leading-relaxed text-sm">
-                {lawyer.description || "Experienced lawyer with strong expertise in legal advisory, corporate law, and client representation."}
+                {lawyer.description ||
+                  "Experienced lawyer with strong expertise in legal advisory, corporate law, and client representation."}
               </p>
             </div>
 
             {/* Reviews */}
             <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-white">Client Feedback</h2>
-                <span className="text-xs text-slate-500 font-semibold uppercase tracking-widest">{reviews.length} reviews</span>
+                <h2 className="text-xl font-bold text-white">
+                  Client Feedback
+                </h2>
+                <span className="text-xs text-slate-500 font-semibold uppercase tracking-widest">
+                  {reviews.length} reviews
+                </span>
               </div>
 
               {reviews.length === 0 ? (
@@ -116,7 +163,9 @@ const LawyersDetailsPage = async ({ params }) => {
                   <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center">
                     <Star size={20} className="text-slate-600" />
                   </div>
-                  <p className="text-slate-500 text-sm">No reviews yet. Be the first!</p>
+                  <p className="text-slate-500 text-sm">
+                    No reviews yet. Be the first!
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -130,7 +179,9 @@ const LawyersDetailsPage = async ({ params }) => {
                           <div className="w-8 h-8 rounded-xl bg-indigo-600/20 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xs font-bold">
                             {r.userName?.[0]?.toUpperCase() || "U"}
                           </div>
-                          <p className="text-white text-sm font-semibold">{r.userName}</p>
+                          <p className="text-white text-sm font-semibold">
+                            {r.userName}
+                          </p>
                         </div>
                         {r.rating && (
                           <div className="flex gap-0.5">
@@ -138,7 +189,11 @@ const LawyersDetailsPage = async ({ params }) => {
                               <Star
                                 key={i}
                                 size={12}
-                                className={i < r.rating ? "fill-amber-400 text-amber-400" : "text-slate-700"}
+                                className={
+                                  i < r.rating
+                                    ? "fill-amber-400 text-amber-400"
+                                    : "text-slate-700"
+                                }
                               />
                             ))}
                           </div>
@@ -207,4 +262,3 @@ export default LawyersDetailsPage;
 // };
 
 // export default LawyersDetailsPage;
-
