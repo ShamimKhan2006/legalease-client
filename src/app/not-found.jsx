@@ -10,7 +10,7 @@ export default function NotFound() {
           404
         </h1>
 
-        <h2 className="text-3xl md:text-5xl font-bold mt-4">
+        <h2 className="text-3xl md:text-5xl font-bold mt-4 text-white">
           Oops! Page Not Found
         </h2>
 
@@ -28,7 +28,7 @@ export default function NotFound() {
 
           <button
       
-            className="px-6 py-3 rounded-2xl border border-gray-700 hover:bg-gray-900 duration-300"
+            className="px-6 py-3 rounded-2xl border border-gray-700 hover:bg-gray-900 duration-300 text-white"
           >
             Go Back
           </button>

@@ -52,7 +52,7 @@ export default function AppNavbar() {
   const isDark = theme === "dark";
 
   return (
-    <div className={`sticky top-0 z-50 w-full transition-all duration-500 ${scrolled ? "px-4 pt-3 pb-2" : "px-0 pt-0 pb-0"}`}>
+    <div className={`sticky  top-0 z-50 w-full transition-all duration-500 ${scrolled ? "px-4 pt-3 pb-2" : "px-0 pt-0 pb-0"}`}>
       <header
         className={`transition-all duration-500 ${
           scrolled
@@ -60,7 +60,7 @@ export default function AppNavbar() {
             : "dark:bg-slate-950 dark:border-white/5 bg-white border-black/5 border-b"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-5 md:px-8">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 ">
           <div className="flex h-16 items-center justify-between">
 
             {/* Logo */}

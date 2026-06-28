@@ -5,6 +5,7 @@ import { useSession, authClient } from "@/lib/auth-client";
 import { uploadImageToImgBB } from "@/utils/uploadImage";
 import Image from "next/image";
 import { Camera, User, Mail, Save, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function UpdateUserProfile() {
   const { data: session } = useSession();
@@ -34,7 +35,7 @@ export default function UpdateUserProfile() {
       if (uploadedUrl) setImage(uploadedUrl);
     } catch (error) {
       console.error(error);
-      alert("ছবি আপলোড ব্যর্থ হয়েছে!");
+      toast.error("Image upload failed . please try again.");
     } finally {
       setUploading(false);
     }
@@ -53,14 +54,14 @@ export default function UpdateUserProfile() {
           newEmail: email,
           callbackURL: "/dashboard",
         });
-        alert("নতুন email এ verification link পাঠানো হয়েছে!");
+        toast.success("Verification link sent to your email.");
       } else {
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000);
       }
     } catch (error) {
       console.error("Update Error:", error);
-      alert("আপডেট করতে সমস্যা হয়েছে!");
+      toast.error("Failed to update profile.");
     } finally {
       setLoading(false);
     }
@@ -156,7 +157,7 @@ export default function UpdateUserProfile() {
               </div>
               {email !== session?.user?.email && (
                 <p className="text-amber-400 text-xs mt-2 flex items-center gap-1">
-                  ⚠️ Email পরিবর্তন করলে verification link পাঠানো হবে
+                  ⚠️ New email verification link will be sent
                 </p>
               )}
             </div>
@@ -170,12 +171,12 @@ export default function UpdateUserProfile() {
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  <span>আপডেট হচ্ছে...</span>
+                  <span>Updating...</span>
                 </>
               ) : success ? (
                 <>
                   <span>✓</span>
-                  <span>সফল হয়েছে!</span>
+                  <span>Update successful!</span>
                 </>
               ) : (
                 <>
@@ -189,7 +190,7 @@ export default function UpdateUserProfile() {
           {/* Success toast */}
           {success && (
             <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-sm text-center">
-              ✓ প্রোফাইল সফলভাবে আপডেট হয়েছে!
+             ✓ Profile updated successfully!
             </div>
           )}
         </div>

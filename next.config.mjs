@@ -14,6 +14,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "i.ibb.co",
       },
+      // Add the new domain below:
+      {
+        protocol: "https",
+        hostname: "cdn-icons-png.flaticon.com",
+      },
     ],
   },
 };
