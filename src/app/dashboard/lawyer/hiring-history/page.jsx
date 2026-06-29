@@ -8,14 +8,24 @@ import { History, CheckCircle2, XCircle, Clock } from "lucide-react";
 export default function LawyerHiringRequests() {
   const { data: session } = authClient.useSession();
   const [requests, setRequests] = useState([]);
-
-  useEffect(() => {
-    if (session?.user?.email) {
-      axios.get(`${process.env.NEXT_PUBLIC_URL}/lawyer/hiring-requests?email=${session.user.email}`)
-        .then(res => setRequests(res.data))
-        .catch(err => toast.error("Failed to load requests"));
-    }
-  }, [session]);
+useEffect(() => {
+  console.log("Session:", session?.user);
+  
+  if (session?.user?.email) {
+    const url = `${process.env.NEXT_PUBLIC_URL}/lawyer/hiring-requests?email=${session.user.email}`;
+    console.log("Fetching:", url);
+    
+    axios.get(url)
+      .then(res => {
+        console.log("Response:", res.data);
+        setRequests(res.data);
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        toast.error("Failed to load requests");
+      });
+  }
+}, [session]);
 
   const updateStatus = async (id, status) => {
     try {

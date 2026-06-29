@@ -110,23 +110,29 @@ const LawyersDetailsPage = async ({ params }) => {
 
             {/* Hire Button */}
             <div className="shrink-0 w-full md:w-48">
-              <form
-                id="payment-form"
-                action="/api/checkout_sessions"
-                method="POST"
-              >
-                <input type="hidden" name="lawyerId" value={id} />
+              <form id="payment-form" action="/api/checkout_sessions" method="POST">
+                <input type="hidden" name="lawyerId" value={lawyer._id} />
+                <input type="hidden" name="lawyerName" value={lawyer.name} />
                 <input
                   type="hidden"
                   name="clientName"
-                  value={session?.user?.name || ""}
+                  value={session?.user?.name}
                 />
                 <input
                   type="hidden"
                   name="clientEmail"
-                  value={session?.user?.email || ""}
+                  value={session?.user?.email}
                 />
-                <HireButton />
+                <input
+                  type="hidden"
+                  name="hourlyRate"
+                  value={lawyer.hourlyRate}
+                />
+                <HireButton
+                  lawyerId={lawyer._id}
+                  lawyerName={lawyer.name}
+                  hourlyRate={lawyer.hourlyRate}
+                />
               </form>
             </div>
           </div>
@@ -222,4 +228,3 @@ const LawyersDetailsPage = async ({ params }) => {
 };
 
 export default LawyersDetailsPage;
-
