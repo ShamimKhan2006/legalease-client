@@ -8,13 +8,12 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "**.unsplash.com",  // সব unsplash subdomain cover হবে
       },
       {
         protocol: "https",
         hostname: "i.ibb.co",
       },
-      // Add the new domain below:
       {
         protocol: "https",
         hostname: "cdn-icons-png.flaticon.com",
