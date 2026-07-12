@@ -129,6 +129,7 @@ import {
   HiCheckCircle,
   HiUpload,
 } from "react-icons/hi";
+import Image from "next/image";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -329,7 +330,7 @@ const RegisterPage = () => {
 
                 {imgPreview ? (
                   <>
-                    <img
+                    <Image
                       src={imgPreview}
                       alt="preview"
                       className="w-9 h-9 rounded-full object-cover border-2 border-blue-400"
