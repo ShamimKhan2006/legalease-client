@@ -4,7 +4,7 @@ import AppNavber from "@/components/AppNavber";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "next-themes";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+
 
 const roboto = Roboto({
   variable: "--font-geist-mono",
@@ -27,11 +27,11 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col bg-slate-900">
         <Toaster />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <SmoothScrollProvider>
+       
             <AppNavber />
             {children}
             <Footer />
-          </SmoothScrollProvider>
+         
         </ThemeProvider>
       </body>
     </html>
