@@ -16,7 +16,8 @@ const MissionSection = () => {
       <div
         className="absolute top-[-100px] right-[-80px] w-[400px] h-[400px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)",
         }}
       />
 
@@ -24,14 +25,15 @@ const MissionSection = () => {
         {/* Left - Image */}
         <div className="relative rounded-2xl overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1556157079-9baf751b1d9c?auto=format&fit=crop&w=900&q=80"
+            src="https://images.unsplash.com/photo-1568992687947-868a62a9f521"
             alt="Law office"
             className="w-full h-[420px] object-cover"
           />
           <div
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(180deg, rgba(0,13,26,0.1) 0%, rgba(0,21,46,0.6) 100%)",
+              background:
+                "linear-gradient(180deg, rgba(0,13,26,0.1) 0%, rgba(0,21,46,0.6) 100%)",
             }}
           />
         </div>
@@ -50,14 +52,14 @@ const MissionSection = () => {
             Our Mission
           </h2>
           <p className="text-blue-300 text-[15px] leading-relaxed mb-4">
-            LegalEase exists to close the gap between people who need legal
-            help and the lawyers who can actually give it. No confusing
-            directories, no cold calls, no guesswork.
+            LegalEase exists to close the gap between people who need legal help
+            and the lawyers who can actually give it. No confusing directories,
+            no cold calls, no guesswork.
           </p>
           <p className="text-blue-300 text-[15px] leading-relaxed">
             We built a platform where finding the right lawyer takes minutes,
-            not weeks, and where every match is backed by real credentials
-            and real reviews.
+            not weeks, and where every match is backed by real credentials and
+            real reviews.
           </p>
         </div>
       </div>
