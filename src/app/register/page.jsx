@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { Label, Radio, RadioGroup } from "@heroui/react";
@@ -18,6 +16,7 @@ import {
   HiUpload,
 } from "react-icons/hi";
 import Image from "next/image";
+import Link from "next/link";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -33,12 +32,10 @@ const RegisterPage = () => {
   const [imgUploading, setImgUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ImgBB তে image upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Preview show করা
     const reader = new FileReader();
     reader.onloadend = () => setImgPreview(reader.result);
     reader.readAsDataURL(file);
@@ -104,315 +101,350 @@ const RegisterPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      className="min-h-screen flex relative overflow-hidden"
       style={{
         background:
           "linear-gradient(135deg, #000d1a 0%, #001f3f 50%, #00152e 100%)",
       }}
     >
-      {/* Background glows */}
-      <div
-        className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute bottom-[-60px] left-[-60px] w-[280px] h-[280px] rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)",
-        }}
-      />
+      {/* ===================== LEFT SIDE - IMAGE (LAWYER/LEGAL) ===================== */}
+      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
+        <img
+          src="https://plus.unsplash.com/premium_photo-1683121731093-475880e5f3d7"
+          alt="Law and justice"
+          className="absolute inset-0 h-full w-full object-cover animate-[imgZoom_16s_ease-in-out_infinite_alternate]"
+        />
 
-      <div className="w-full max-w-[440px] relative z-10 my-6">
         <div
-          className="rounded-[28px] p-8 shadow-2xl"
+          className="absolute inset-0"
           style={{
-            background: "rgba(0, 30, 65, 0.88)",
-            border: "1px solid rgba(96,165,250,0.18)",
-            backdropFilter: "blur(16px)",
+            background:
+              "linear-gradient(180deg, rgba(0,13,26,0.25) 0%, rgba(0,21,46,0.9) 100%)",
           }}
-        >
-          {/* Header */}
-          <div className="text-center mb-7">
-            <div
-              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
-              style={{
-                background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)",
-              }}
-            >
-              <HiBriefcase className="text-white text-2xl" />
-            </div>
-            <h1 className="text-[26px] font-bold text-white tracking-tight">
-              Create Account
-            </h1>
-            <p className="text-blue-300 mt-1 text-sm">
-              Join our professional legal network
-            </p>
-          </div>
+        />
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* Name */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">
-                Full Name
-              </label>
-              <div className="relative">
-                <HiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={inputStyle}
-                  onFocus={inputFocus}
-                  onBlur={inputBlur}
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">Email</label>
-              <div className="relative">
-                <HiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={inputStyle}
-                  onFocus={inputFocus}
-                  onBlur={inputBlur}
-                />
-              </div>
-            </div>
-
-            {/* Image Upload (ImgBB) */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">
-                Profile Photo
-              </label>
-              <div
-                className="w-full rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-200 px-4"
-                style={{
-                  ...inputStyle,
-                  height: "52px",
-                  border: "1.5px dashed rgba(96,165,250,0.4)",
-                }}
-                onClick={() => fileInputRef.current.click()}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                />
-
-                {imgPreview ? (
-                  <>
-                    <Image
-                      src={imgPreview}
-                      alt="preview"
-                      className="w-9 h-9 rounded-full object-cover border-2 border-blue-400"
-                    />
-                    <span className="text-blue-300 text-sm flex-1 truncate">
-                      {imgUploading
-                        ? "Uploading..."
-                        : imgUrl
-                          ? "Photo uploaded ✓"
-                          : "Preview only..."}
-                    </span>
-                    {imgUploading && (
-                      <span className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center"
-                      style={{ background: "rgba(59,130,246,0.15)" }}
-                    >
-                      <HiPhotograph className="text-blue-400 text-lg" />
-                    </div>
-                    <span className="text-blue-400 text-sm">
-                      {imgUploading ? "Uploading..." : "Click to upload photo"}
-                    </span>
-                    <HiUpload className="text-blue-500 text-sm ml-auto" />
-                  </>
-                )}
-              </div>
-            </div>
-
-            
-        {/* role */}
-        <div className="flex flex-col gap-4">
-      <Label className=' text-white'>Role</Label>
-      <RadioGroup defaultValue="user" name="role" orientation="horizontal" onChange={value => setRole(value)}>
-        <Radio value="user">
-          <Radio.Content>
-            <Radio.Control>
-              <Radio.Indicator />
-            </Radio.Control >
-            <h4 className="text-white">User</h4>
-          </Radio.Content>
-
-        </Radio>
-        <Radio value="lawyer" >
-          <Radio.Content>
-            <Radio.Control>
-              <Radio.Indicator />
-            </Radio.Control>
-             <h4 className="text-white">Lawyer</h4>
-          </Radio.Content>
-
-        </Radio>
-
-      </RadioGroup>
-    </div>
-
-
-
-
-
-
-            {/* Password */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">
-                Password
-              </label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={inputStyle}
-                  onFocus={inputFocus}
-                  onBlur={inputBlur}
-                />
-              </div>
-            </div>
-
-            {/* Confirm Password */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-blue-200 text-sm font-medium">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
-                <input
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
-                  style={{
-                    ...inputStyle,
-                    border:
-                      confirmPassword && confirmPassword !== password
-                        ? "1.5px solid rgba(239,68,68,0.6)"
-                        : inputStyle.border,
-                  }}
-                  onFocus={inputFocus}
-                  onBlur={(e) => {
-                    e.target.style.border =
-                      confirmPassword && confirmPassword !== password
-                        ? "1.5px solid rgba(239,68,68,0.6)"
-                        : "1.5px solid rgba(96,165,250,0.25)";
-                  }}
-                />
-              </div>
-              {confirmPassword && confirmPassword !== password && (
-                <p className="text-red-400 text-xs mt-0.5">
-                  Passwords do not match
-                </p>
-              )}
-            </div>
-
-            {/* Register Button */}
-            <button
-              type="submit"
-              disabled={loading || imgUploading}
-              className="w-full h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2 mt-2 transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
-              style={{
-                background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)",
-                boxShadow: "0 4px 20px rgba(59,130,246,0.35)",
-              }}
-            >
-              {loading ? (
-                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  <HiCheckCircle className="text-lg" />
-                  Register Now
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 my-5">
-            <div
-              className="flex-1 h-px"
-              style={{ background: "rgba(96,165,250,0.2)" }}
-            />
-            <span className="text-xs text-blue-400 uppercase tracking-widest font-medium">
-              Or
-            </span>
-            <div
-              className="flex-1 h-px"
-              style={{ background: "rgba(96,165,250,0.2)" }}
-            />
-          </div>
-
-          {/* Google Button */}
-          <button
-            onClick={() => authClient.signIn.social({ provider: "google" })}
-            className="w-full h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-3 transition-all duration-200 active:scale-[0.98]"
-            style={{
-              background: "rgba(255,255,255,0.07)",
-              border: "1.5px solid rgba(255,255,255,0.15)",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.07)")
-            }
-          >
-            <FcGoogle className="text-xl" />
-            Sign up with Google
-          </button>
-
-          {/* Login Link */}
-          <p className="text-center text-sm text-blue-300 mt-5">
-            Already have an account?{" "}
-            <a
-              href="/login"
-              className="text-blue-400 font-semibold hover:text-blue-300 transition-colors underline underline-offset-2"
-            >
-              Sign in
-            </a>
+        <div className="absolute bottom-0 left-0 right-0 p-10 z-10 animate-[fadeUp_0.9s_cubic-bezier(0.16,1,0.3,1)_both]">
+          <h2 className="text-white text-4xl font-bold leading-tight drop-shadow-md">
+            Join Our
+            <br />
+            Legal Network.
+          </h2>
+          <p className="text-blue-200 mt-3 max-w-sm">
+            Sign up as a client or a lawyer and get connected with trusted legal professionals.
           </p>
         </div>
+
+        <div
+          className="pointer-events-none absolute top-10 right-10 h-40 w-40 rounded-full opacity-30 blur-3xl animate-[float_6s_ease-in-out_infinite]"
+          style={{
+            background: "radial-gradient(circle, rgba(59,130,246,0.5) 0%, transparent 70%)",
+          }}
+        />
       </div>
+
+      {/* ===================== RIGHT SIDE - REGISTER FORM ===================== */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 relative overflow-hidden">
+
+        <div
+          className="absolute top-[-80px] right-[-80px] w-[350px] h-[350px] rounded-full pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute bottom-[-60px] left-[-60px] w-[280px] h-[280px] rounded-full pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="w-full max-w-[440px] relative z-10 my-6">
+          <div
+            className="rounded-[28px] p-8 shadow-2xl animate-[fadeUp_0.6s_cubic-bezier(0.16,1,0.3,1)_both]"
+            style={{
+              background: "rgba(0, 30, 65, 0.88)",
+              border: "1px solid rgba(96,165,250,0.18)",
+              backdropFilter: "blur(16px)",
+            }}
+          >
+            <div className="text-center mb-7">
+              <div
+                className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
+                style={{
+                  background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)",
+                }}
+              >
+                <HiBriefcase className="text-white text-2xl" />
+              </div>
+              <h1 className="text-[26px] font-bold text-white tracking-tight">
+                Create Account
+              </h1>
+              <p className="text-blue-300 mt-1 text-sm">
+                Join our professional legal network
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-blue-200 text-sm font-medium">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <HiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
+                    style={inputStyle}
+                    onFocus={inputFocus}
+                    onBlur={inputBlur}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-blue-200 text-sm font-medium">Email</label>
+                <div className="relative">
+                  <HiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
+                    style={inputStyle}
+                    onFocus={inputFocus}
+                    onBlur={inputBlur}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-blue-200 text-sm font-medium">
+                  Profile Photo
+                </label>
+                <div
+                  className="w-full rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-200 px-4"
+                  style={{
+                    ...inputStyle,
+                    height: "52px",
+                    border: "1.5px dashed rgba(96,165,250,0.4)",
+                  }}
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                  />
+
+                  {imgPreview ? (
+                    <>
+                      <Image
+                        src={imgPreview}
+                        alt="preview"
+                        width={36}
+                        height={36}
+                        className="w-9 h-9 rounded-full object-cover border-2 border-blue-400"
+                      />
+                      <span className="text-blue-300 text-sm flex-1 truncate">
+                        {imgUploading
+                          ? "Uploading..."
+                          : imgUrl
+                            ? "Photo uploaded ✓"
+                            : "Preview only..."}
+                      </span>
+                      {imgUploading && (
+                        <span className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className="w-9 h-9 rounded-full flex items-center justify-center"
+                        style={{ background: "rgba(59,130,246,0.15)" }}
+                      >
+                        <HiPhotograph className="text-blue-400 text-lg" />
+                      </div>
+                      <span className="text-blue-400 text-sm">
+                        {imgUploading ? "Uploading..." : "Click to upload photo"}
+                      </span>
+                      <HiUpload className="text-blue-500 text-sm ml-auto" />
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <Label className=' text-white'>Role</Label>
+                <RadioGroup defaultValue="user" name="role" orientation="horizontal" onChange={value => setRole(value)}>
+                  <Radio value="user">
+                    <Radio.Content>
+                      <Radio.Control>
+                        <Radio.Indicator />
+                      </Radio.Control >
+                      <h4 className="text-white">User</h4>
+                    </Radio.Content>
+                  </Radio>
+                  <Radio value="lawyer" >
+                    <Radio.Content>
+                      <Radio.Control>
+                        <Radio.Indicator />
+                      </Radio.Control>
+                       <h4 className="text-white">Lawyer</h4>
+                    </Radio.Content>
+                  </Radio>
+                </RadioGroup>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-blue-200 text-sm font-medium">
+                  Password
+                </label>
+                <div className="relative">
+                  <HiLockClosed className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
+                    style={inputStyle}
+                    onFocus={inputFocus}
+                    onBlur={inputBlur}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-blue-200 text-sm font-medium">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <HiLockClosed className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-lg" />
+                  <input
+                    type="password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full h-12 pl-10 pr-4 rounded-xl text-white text-sm outline-none transition-all duration-200"
+                    style={{
+                      ...inputStyle,
+                      border:
+                        confirmPassword && confirmPassword !== password
+                          ? "1.5px solid rgba(239,68,68,0.6)"
+                          : inputStyle.border,
+                    }}
+                    onFocus={inputFocus}
+                    onBlur={(e) => {
+                      e.target.style.border =
+                        confirmPassword && confirmPassword !== password
+                          ? "1.5px solid rgba(239,68,68,0.6)"
+                          : "1.5px solid rgba(96,165,250,0.25)";
+                    }}
+                  />
+                </div>
+                {confirmPassword && confirmPassword !== password && (
+                  <p className="text-red-400 text-xs mt-0.5">
+                    Passwords do not match
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || imgUploading}
+                className="w-full h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-2 mt-2 transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{
+                  background: "linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)",
+                  boxShadow: "0 4px 20px rgba(59,130,246,0.35)",
+                }}
+              >
+                {loading ? (
+                  <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <HiCheckCircle className="text-lg" />
+                    Register Now
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="flex items-center gap-3 my-5">
+              <div
+                className="flex-1 h-px"
+                style={{ background: "rgba(96,165,250,0.2)" }}
+              />
+              <span className="text-xs text-blue-400 uppercase tracking-widest font-medium">
+                Or
+              </span>
+              <div
+                className="flex-1 h-px"
+                style={{ background: "rgba(96,165,250,0.2)" }}
+              />
+            </div>
+
+            <button
+              onClick={() => authClient.signIn.social({ provider: "google" })}
+              className="w-full h-12 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-3 transition-all duration-200 active:scale-[0.98]"
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                border: "1.5px solid rgba(255,255,255,0.15)",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "rgba(255,255,255,0.12)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "rgba(255,255,255,0.07)")
+              }
+            >
+              <FcGoogle className="text-xl" />
+              Sign up with Google
+            </button>
+
+            <p className="text-center text-sm text-blue-300 mt-5">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="text-blue-400 font-semibold hover:text-blue-300 transition-colors underline underline-offset-2"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes imgZoom {
+          from { transform: scale(1); }
+          to { transform: scale(1.08); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation: none !important; }
+        }
+      `}</style>
     </div>
   );
 };
 
 export default RegisterPage;
-
-
-
